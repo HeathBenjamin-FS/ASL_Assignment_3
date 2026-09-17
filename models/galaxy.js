@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Galaxy.hasMany(models.Star, {
         foreignKey: "galaxyId",
         onDelete: "CASCADE",
+        hooks: true,
       });
     }
   }
