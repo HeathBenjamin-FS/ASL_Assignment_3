@@ -1,0 +1,16 @@
+
+{% extends 'layouts/base.twig' %}
+
+{% block pageName %}Create Galaxy {% endblock %}
+
+{% block main %}
+
+<h1>Create New Galaxy</h1>
+
+<form method="POST" action="/galaxies">
+    {% include 'galaxy/_form.twig' %}
+</form>
+
+<p><a href="/galaxies">Cancel and Go Back</a></p>
+
+{% endblock %}

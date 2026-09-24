@@ -1,0 +1,26 @@
+{% extends 'layouts/base.twig'%}
+
+{% block pageName %}All Galaxies{% endblock %}
+
+{% block main %}
+    <h1>All Galaxies</h1>
+
+    <p><a href="/galaxies/new">Create New Galaxy</a></p>
+
+    <ul>
+    {% for galaxy in galaxies %}
+        <li>
+            <strong>{{galaxy.name}}</strong> (Size: {{galaxy.size}})
+            -
+            <a href="/galaxies/{{ galaxy.id }}">Show</a> |
+            <a href="/galaxies/{{ galaxy.id }}/edit">Edit</a> |
+            <a href="/galaxies/{{ galaxy.id }}/delete">Delete</a>
+        </li>
+    {% else %}
+        <li>No galaxies found.</li>
+    {% endfor %}
+    </ul>
+
+    <p><a href="/">Back to Home</a></p>
+
+{% endblock %}

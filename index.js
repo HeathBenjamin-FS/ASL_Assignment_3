@@ -1,8 +1,15 @@
 // Load in our Express framework
 const express = require(`express`);
+const bodyParser = require("body-parser");
 
 // Create a new Express instance called "app"
 const app = express();
+
+//add in body parser
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.set("views", __dirname + "/views");
+app.set("view engine", "twig");
 
 app.use(express.json());
 // Load in our RESTful routers
@@ -10,7 +17,11 @@ const routers = require("./routers/index.js");
 
 // Home page welcome middleware
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to Star Tracker Library");
+  // res.status(200).send("Welcome to Star Tracker Library");
+
+  res.render("home", {
+    name: "Benjamin",
+  });
 });
 
 // Register our RESTful routers with our "app"
