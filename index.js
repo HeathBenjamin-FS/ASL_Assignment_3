@@ -1,9 +1,15 @@
 // Load in our Express framework
 const express = require(`express`);
 const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
 
 // Create a new Express instance called "app"
 const app = express();
+
+//add in file-upload
+app.use(fileUpload());
+
+app.use(express.static(__dirname + "/public"));
 
 //add in body parser
 app.use(bodyParser.urlencoded({ extended: true }));

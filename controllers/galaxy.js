@@ -40,7 +40,7 @@ const show = async (req, res) => {
 };
 
 // Create a new resource
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   // try {
   //   // Issue a redirect with a success 2xx code
   //   const { name, size, description } = req.body;
@@ -51,11 +51,13 @@ const create = async (req, res) => {
   // }
 
   const galaxy = await Galaxy.create(req.body);
+  req.resourceId = galaxy.id;
+  if (next) await next();
   res.redirect(302, `/galaxies/${galaxy.id}`);
 };
 
 // Update an existing resource
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   // try {
   //   const id = req.params.id;
   //   const { name, size, description } = req.body;
@@ -76,7 +78,14 @@ const update = async (req, res) => {
   await Galaxy.update(req.body, {
     where: { id: req.params.id },
   });
-  res.redirect(302, `/galaxies/${req.params.id}`);
+  req.resourceId = req.params.id;
+
+  if (next) {
+    await next();
+  }
+  if (!res.headersSent) {
+    res.redirect(302, `/galaxies/${req.params.id}`);
+  }
 };
 
 // Remove a single resource

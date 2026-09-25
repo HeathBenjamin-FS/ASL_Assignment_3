@@ -37,7 +37,7 @@ const show = async (req, res) => {
 };
 
 // Create a new resource
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   // try {
   //   // Issue a redirect with a success 2xx code
   //   const { name, size, description, galaxyId } = req.body;
@@ -48,11 +48,13 @@ const create = async (req, res) => {
   // }
 
   const star = await Star.create(req.body);
-  res.redirect(302, `/stars/${star.id}`);
+  req.resourceId = star.id;
+  if (next) await next();
+  if (!res.headersSent) res.redirect(302, `/stars/${star.id}`);
 };
 
 // Update an existing resource
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   // try {
   //   const id = req.params.id;
   //   const { name, size, description, galaxyId } = req.body;
@@ -79,7 +81,9 @@ const update = async (req, res) => {
   await Star.update(req.body, {
     where: { id: req.params.id },
   });
-  res.redirect(302, `/stars/${req.params.id}`);
+  req.resourceId = req.params.id;
+  if (next) await next();
+  if (!res.headersSent) res.redirect(302, `/stars/${req.params.id}`);
 };
 
 // Remove a single resource

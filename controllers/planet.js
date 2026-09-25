@@ -42,7 +42,7 @@ const show = async (req, res) => {
 };
 
 // Create a new resource
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   // try {
   //   const { name, size, description } = req.body;
   //   await Planet.create({ name, size, description });
@@ -54,11 +54,13 @@ const create = async (req, res) => {
   // }
 
   const planet = await Planet.create(req.body);
-  res.redirect(302, `/planets/${planet.id}`);
+  req.resourceId = planet.id;
+  if (next) await next();
+  if (!res.headersSent) res.redirect(302, `/planets/${planet.id}`);
 };
 
 // Update an existing resource
-const update = async (req, res) => {
+const update = async (req, res, next) => {
   // try {
   //   const id = req.params.id;
   //   const { name, size, description } = req.body;
@@ -80,7 +82,9 @@ const update = async (req, res) => {
   await Planet.update(req.body, {
     where: { id: req.params.id },
   });
-  res.redirect(302, `/planets/${req.params.id}`);
+  req.resourceId = req.params.id;
+  if (next) await next();
+  if (!res.headersSent) res.redirect(302, `/planets/${req.params.id}`);
 };
 
 // Remove a single resource

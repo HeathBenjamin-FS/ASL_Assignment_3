@@ -7,7 +7,7 @@
 
 <h1>Edit Planet: {{planet.name}}</h1>
 
-<form method="POST" action="/planets/{{planet.id}}">
+<form method="POST" action="/planets/{{planet.id}}" enctype="multipart/form-data">
     {% include 'planet/_form.twig' %}
 </form>
 

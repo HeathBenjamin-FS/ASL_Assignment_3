@@ -7,10 +7,10 @@
 
 <h1>Create New Planet</h1>
 
-<form method="POST" action="/planets">
+<form method="POST" action="/planets" enctype="multipart/form-data">
     {% include 'planet/_form.twig' %}
 </form>
 
-<p><a href="/planets">Cancel and Go Back</a></p>
+<p><a href="/planets">Cancel</a></p>
 
 {% endblock %}
