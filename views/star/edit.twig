@@ -1,0 +1,16 @@
+
+{%extends 'layouts/base.twig' %}
+
+{% block pageName %}Edit {{ star.name }}{% endblock %}
+
+{% block main %}
+
+<h1>Edit Planet: {{star.name}}</h1>
+
+<form method="POST" action="/planets/{{star.id}}">
+    {% include 'star/_form.twig' %}
+</form>
+
+<p><a href="/stars/">Cancel</a></p>
+
+{% endblock %}

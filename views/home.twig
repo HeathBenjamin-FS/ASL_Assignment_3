@@ -1,1 +1,15 @@
-<h1>Hello {{name}}!</h1>
+
+{% extends 'layouts/base.twig' %}
+
+{% block pageName %}Home - Space Tracker{% endblock %}
+
+{% block main %}
+  <h1>Welcome to the Space Tracker Library!</h1>
+  <p>Select a celestial catalog to browse or manage:</p>
+
+  <ul>
+    <li><a href="/galaxies">🌌 View Galaxies</a></li>
+    <li><a href="/stars">⭐ View Stars</a></li>
+    <li><a href="/planets">🪐 View Planets</a></li>
+  </ul>
+{% endblock %}

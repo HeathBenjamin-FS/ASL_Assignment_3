@@ -1,0 +1,16 @@
+
+{% extends 'layouts/base.twig' %}
+
+{% block pageName %}Create Planet {% endblock %}
+
+{% block main %}
+
+<h1>Create New Planet</h1>
+
+<form method="POST" action="/planets">
+    {% include 'planet/_form.twig' %}
+</form>
+
+<p><a href="/planets">Cancel and Go Back</a></p>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'layouts/base.twig'%}
+
+{% block pageName %}{{ star.name }}{% endblock %}
+
+{% block main %}
+    <h1>{{ star.name }}</h1>
+
+    <p><strong>ID:</strong> {{ star.id }}</p>
+    <p><strong>Size:</strong> {{ star.size }}</p>
+    <p><strong>Description:</strong> {{ star.description }}</p>
+
+    <p>
+        <a href="/stars/{{ star.id }}/edit">Edit this Planet</a> |
+        <a href="/stars/{{ star.id }}/delete">Delete this Planet</a>
+    </p>
+
+
+    <p><a href="/stars">Back to all Planets</a></p>
+    
+{% endblock %}

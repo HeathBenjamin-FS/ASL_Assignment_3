@@ -1,0 +1,16 @@
+
+{% extends 'layouts/base.twig' %}
+
+{% block pageName %}Create Star {% endblock %}
+
+{% block main %}
+
+<h1>Create New Star</h1>
+
+<form method="POST" action="/stars">
+    {% include 'star/_form.twig' %}
+</form>
+
+<p><a href="/stars">Cancel</a></p>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'layouts/base.twig'%}
+
+{% block pageName %}All Stars{% endblock %}
+
+{% block main %}
+    <h1>All Stars</h1>
+
+    <p><a href="/stars/new">Create New Star</a></p>
+
+    <ul>
+    {% for star in stars %}
+        <li>
+            <strong>{{star.name}}</strong> (Size: {{star.size}})
+            -
+            <a href="/stars/{{ star.id }}">Show</a> |
+            <a href="/stars/{{ star.id }}/edit">Edit</a> |
+            <a href="/stars/{{ star.id }}/delete">Delete</a>
+        </li>
+    {% else %}
+        <li>No stars found.</li>
+    {% endfor %}
+    </ul>
+
+    <p><a href="/">Back to Home</a></p>
+
+{% endblock %}

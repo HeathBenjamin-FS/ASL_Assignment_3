@@ -51,7 +51,7 @@ const create = async (req, res) => {
   // }
 
   const galaxy = await Galaxy.create(req.body);
-  res.redirect(302, `galaxies/${galaxy.id}`);
+  res.redirect(302, `/galaxies/${galaxy.id}`);
 };
 
 // Update an existing resource
