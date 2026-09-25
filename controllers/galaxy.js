@@ -40,13 +40,13 @@ const show = async (req, res) => {
 
   const galaxy = await Galaxy.findByPk(req.params.id);
   if (!galaxy) {
-    if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    if (req.headers["content-type"] === "application/json") {
       return res.status(404).json({ error: "Galaxy not found" });
     }
     return res.status(404).send("Galaxy not found.");
   }
 
-  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+  if (req.headers["content-type"] === "application/json") {
     res.status(200).json(galaxy);
   }
   res.render("galaxy/show.twig", { galaxy });
@@ -92,21 +92,23 @@ const update = async (req, res, next) => {
   //   res.status(404).json({ message: error.message });
   // }
 
+  const id = req.params.id;
+
   await Galaxy.update(req.body, {
-    where: { id: req.params.id },
+    where: { id },
   });
 
-  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
-    const updatedGalaxy = await Galaxy.findByPk(req.params.id);
+  if (req.headers["content-type"] === "application/json") {
+    const updatedGalaxy = await Galaxy.findByPk(id);
     return res.status(200).json(updatedGalaxy);
   }
-  req.resourceId = req.params.id;
+  req.resourceId = id;
 
   if (next) {
     await next();
   }
   if (!res.headersSent) {
-    res.redirect(302, `/galaxies/${req.params.id}`);
+    res.redirect(302, `/galaxies/${id}`);
   }
 };
 

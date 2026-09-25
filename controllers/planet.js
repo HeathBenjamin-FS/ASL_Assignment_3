@@ -42,14 +42,14 @@ const show = async (req, res) => {
 
   const planet = await Planet.findByPk(req.params.id);
   if (!planet) {
-    if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    if (req.headers["content-type"] === "application/json") {
       return res.status(404).json({ error: "Planet not found." });
     }
     return res.status(404).send("Planet not found.");
   }
 
-  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
-    res.status(200).json(planet);
+  if (req.headers["content-type"] === "application/json") {
+    return res.status(200).json(planet);
   }
   res.render("planet/show.twig", { planet });
 };
@@ -96,17 +96,23 @@ const update = async (req, res, next) => {
   //   res.status(404).json({ message: error.message });
   // }
 
+  const id = req.params.id;
+
   await Planet.update(req.body, {
-    where: { id: req.params.id },
+    where: { id },
   });
 
-  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
-    const updatedPlanet = await Planet.findByPk(req.params.id);
+  if (req.headers["content-type"] === "application/json") {
+    const updatedPlanet = await Planet.findByPk(id);
     return res.status(200).json(updatedPlanet);
   }
-  req.resourceId = req.params.id;
-  if (next) await next();
-  if (!res.headersSent) res.redirect(302, `/planets/${req.params.id}`);
+  req.resourceId = id;
+
+  if (next) {
+    await next();
+  }
+
+  res.redirect(302, `/planets/${id}`);
 };
 
 // Remove a single resource

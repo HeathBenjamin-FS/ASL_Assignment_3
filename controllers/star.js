@@ -62,7 +62,7 @@ const create = async (req, res, next) => {
 
   const star = await Star.create(req.body);
 
-  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+  if (req.headers["content-type"] === "application/json") {
     return res.status(201).json(star);
   }
   req.resourceId = star.id;
@@ -94,19 +94,19 @@ const update = async (req, res, next) => {
   // } catch (error) {
   //   res.status(404).json({ message: error.message });
   // }
-
+  const id = req.params.id;
   await Star.update(req.body, {
-    where: { id: req.params.id },
+    where: { id },
   });
 
-  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
-    const updatedStar = await Star.findByPk(req.params.id);
+  if (req.headers["content-type"] === "application/json") {
+    const updatedStar = await Star.findByPk(id);
     return res.status(200).json(updatedStar);
   }
 
   req.resourceId = req.params.id;
   if (next) await next();
-  if (!res.headersSent) res.redirect(302, `/stars/${req.params.id}`);
+  return res.redirect(302, `/stars/${id}`);
 };
 
 // Remove a single resource

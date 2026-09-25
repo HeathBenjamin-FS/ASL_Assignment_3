@@ -5,9 +5,9 @@
 
 {% block main %}
 
-<h1>Edit Planet: {{planet.name}}</h1>
+<h1>Edit Planet: {{ planet.name }}</h1>
 
-<form method="POST" action="/planets/{{planet.id}}" enctype="multipart/form-data">
+<form method="POST" action="/planets/{{ planet.id }}" enctype="multipart/form-data">
     {% include 'planet/_form.twig' %}
 </form>
 

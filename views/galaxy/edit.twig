@@ -7,7 +7,7 @@
 
 <h1>Edit Galaxy: {{galaxy.name}}</h1>
 
-<form method="POST" action="/galaxies/{{galaxy.id}}" enctype="multipart/form-data">
+<form method="POST" action="/galaxies/{{ galaxy.id }}" enctype="multipart/form-data">
     {% include 'galaxy/_form.twig' %}
 </form>
 

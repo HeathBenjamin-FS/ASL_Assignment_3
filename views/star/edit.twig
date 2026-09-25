@@ -5,9 +5,9 @@
 
 {% block main %}
 
-<h1>Edit Star: {{star.name}}</h1>
+<h1>Edit Star: {{ star.name }}</h1>
 
-<form method="POST" action="/stars/{{star.id}}" enctype="multipart/form-data">
+<form method="POST" action="/stars/{{ star.id }}" enctype="multipart/form-data">
     {% include 'star/_form.twig' %}
 </form>
 

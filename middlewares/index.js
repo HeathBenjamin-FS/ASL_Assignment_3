@@ -3,7 +3,7 @@ const path = require("path");
 const uploadFile = (resourceFolder, Model) => {
   return async (req, res, next) => {
     if (!req.resourceId || !req.files || !req.files.image) {
-      return next ? next() : undefined;
+      return;
     }
 
     const file = req.files.image;
@@ -16,8 +16,6 @@ const uploadFile = (resourceFolder, Model) => {
     } catch (error) {
       console.error("File upload error:", error);
     }
-
-    if (next) next();
   };
 };
 
