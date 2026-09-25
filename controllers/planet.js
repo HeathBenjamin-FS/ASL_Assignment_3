@@ -13,6 +13,9 @@ const index = async (req, res) => {
   // }
 
   const planets = await Planet.findAll();
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(200).json(planets);
+  }
   res.render("planet/index.twig", { planets });
 };
 
@@ -38,6 +41,16 @@ const show = async (req, res) => {
   // }
 
   const planet = await Planet.findByPk(req.params.id);
+  if (!planet) {
+    if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+      return res.status(404).json({ error: "Planet not found." });
+    }
+    return res.status(404).send("Planet not found.");
+  }
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    res.status(200).json(planet);
+  }
   res.render("planet/show.twig", { planet });
 };
 
@@ -54,6 +67,10 @@ const create = async (req, res, next) => {
   // }
 
   const planet = await Planet.create(req.body);
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(201).json(planet);
+  }
   req.resourceId = planet.id;
   if (next) await next();
   if (!res.headersSent) res.redirect(302, `/planets/${planet.id}`);
@@ -82,6 +99,11 @@ const update = async (req, res, next) => {
   await Planet.update(req.body, {
     where: { id: req.params.id },
   });
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    const updatedPlanet = await Planet.findByPk(req.params.id);
+    return res.status(200).json(updatedPlanet);
+  }
   req.resourceId = req.params.id;
   if (next) await next();
   if (!res.headersSent) res.redirect(302, `/planets/${req.params.id}`);
@@ -103,6 +125,9 @@ const remove = async (req, res) => {
   await Planet.destroy({
     where: { id: req.params.id },
   });
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(204).send();
+  }
   res.redirect(302, `/planets`);
 };
 

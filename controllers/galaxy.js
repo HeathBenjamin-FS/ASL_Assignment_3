@@ -14,6 +14,9 @@ const index = async (req, res) => {
   // }
 
   const galaxies = await Galaxy.findAll();
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(200).json(galaxies);
+  }
   res.render("galaxy/index.twig", { galaxies });
 };
 
@@ -36,6 +39,16 @@ const show = async (req, res) => {
   // }
 
   const galaxy = await Galaxy.findByPk(req.params.id);
+  if (!galaxy) {
+    if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+      return res.status(404).json({ error: "Galaxy not found" });
+    }
+    return res.status(404).send("Galaxy not found.");
+  }
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    res.status(200).json(galaxy);
+  }
   res.render("galaxy/show.twig", { galaxy });
 };
 
@@ -51,6 +64,10 @@ const create = async (req, res, next) => {
   // }
 
   const galaxy = await Galaxy.create(req.body);
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(201).json(galaxy);
+  }
   req.resourceId = galaxy.id;
   if (next) await next();
   res.redirect(302, `/galaxies/${galaxy.id}`);
@@ -78,6 +95,11 @@ const update = async (req, res, next) => {
   await Galaxy.update(req.body, {
     where: { id: req.params.id },
   });
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    const updatedGalaxy = await Galaxy.findByPk(req.params.id);
+    return res.status(200).json(updatedGalaxy);
+  }
   req.resourceId = req.params.id;
 
   if (next) {
@@ -106,6 +128,9 @@ const remove = async (req, res) => {
   await Galaxy.destroy({
     where: { id: req.params.id },
   });
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(204).send();
+  }
   res.redirect(302, `/galaxies`);
 };
 

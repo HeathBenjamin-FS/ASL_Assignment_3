@@ -13,6 +13,9 @@ const index = async (req, res) => {
   // }
 
   const stars = await Star.findAll();
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(200).json(stars);
+  }
   res.render("star/index.twig", { stars });
 };
 
@@ -33,6 +36,16 @@ const show = async (req, res) => {
   // }
 
   const star = await Star.findByPk(req.params.id);
+  if (!star) {
+    if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+      return res.status(404).json({ error: "Star not found." });
+    }
+    return res.status(404).send("Star not found.");
+  }
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    res.status(200).json(star);
+  }
   res.render("star/show.twig", { star });
 };
 
@@ -48,6 +61,10 @@ const create = async (req, res, next) => {
   // }
 
   const star = await Star.create(req.body);
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(201).json(star);
+  }
   req.resourceId = star.id;
   if (next) await next();
   if (!res.headersSent) res.redirect(302, `/stars/${star.id}`);
@@ -81,6 +98,12 @@ const update = async (req, res, next) => {
   await Star.update(req.body, {
     where: { id: req.params.id },
   });
+
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    const updatedStar = await Star.findByPk(req.params.id);
+    return res.status(200).json(updatedStar);
+  }
+
   req.resourceId = req.params.id;
   if (next) await next();
   if (!res.headersSent) res.redirect(302, `/stars/${req.params.id}`);
@@ -102,6 +125,9 @@ const remove = async (req, res) => {
   await Star.destroy({
     where: { id: req.params.id },
   });
+  if (req.headers["content-type"] === "application/json" || req.accepts("html", "json") === "json") {
+    return res.status(204).send();
+  }
   res.redirect(302, `/stars`);
 };
 
